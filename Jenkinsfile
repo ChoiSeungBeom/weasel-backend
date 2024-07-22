@@ -24,9 +24,9 @@ pipeline {
                 script {
                     // AWS 자격 증명을 사용하여 ECR에 로그인
                     withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: "${AWS_CREDENTIAL}"]]) {
-                       sh '''
+                       sh """
                             aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_REPOSITORY}
-                          '''
+                          """
 
                     }
                 }
@@ -42,10 +42,10 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                sh '''
+                sh """
                     chmod +x ./gradlew
                     ./gradlew clean build --no-daemon
-                '''
+                """
                 }
             }
         }
@@ -53,7 +53,7 @@ pipeline {
         stage('Building image') {
           steps{
             script {
-              sh """ docker build -t ${IMAGE_REPO_NAME}:${currentBuild.number} . """
+              sh """ docker build -t ${IMAGE_REPO_NAME} . """
             }
           }
         }
@@ -61,8 +61,8 @@ pipeline {
         stage('Pushing to ECR') {
             steps {
                 script {
-                    sh """docker tag ${IMAGE_REPO_NAME}:${currentBuild.number} ${REPOSITORY_URI}:${currentBuild.number}"""
-                    sh """docker push ${REPOSITORY_URI}:${currentBuild.number}"""
+                    sh """docker tag ${IMAGE_REPO_NAME}:Num${currentBuild.number} ${REPOSITORY_URI}:Num${currentBuild.number}"""
+                    sh """docker push ${REPOSITORY_URI}:Num${currentBuild.number}"""
                 }
             }
         }
@@ -70,7 +70,7 @@ pipeline {
         stage('Delete Docker images') {
             steps {
                 script {
-                    sh """docker rmi ${IMAGE_REPO_NAME}:${currentBuild.number}"""
+                    sh """docker rmi ${IMAGE_REPO_NAME}:Num${currentBuild.number}"""
                 }
             }
         }
