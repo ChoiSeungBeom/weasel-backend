@@ -43,8 +43,8 @@ pipeline {
             steps {
                 script {
                 sh '''
-                    ./gradlew wrapper --gradle-version 8.5
                     chmod +x ./gradlew
+                    ./gradlew wrapper --gradle-version 8.5
                     ./gradlew clean build --no-daemon
                     ls build/libs
                     ./gradlew tasks --all
