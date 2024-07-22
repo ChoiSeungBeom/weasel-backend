@@ -53,7 +53,7 @@ pipeline {
         stage('Building image') {
           steps{
             script {
-              dockerImage = docker.build "${IMAGE_REPO_NAME}:${currentBuild.number}"
+              sh """ docker.build -t "${IMAGE_REPO_NAME} . """
             }
           }
         }
@@ -61,7 +61,7 @@ pipeline {
         stage('Pushing to ECR') {
             steps {
                 script {
-                    //sh """docker tag ${IMAGE_REPO_NAME}:${currentBuild.number} ${REPOSITORY_URI}:${currentBuild.number}"""
+                    sh """docker tag ${IMAGE_REPO_NAME}:${currentBuild.number} ${REPOSITORY_URI}:${currentBuild.number}"""
                     sh """docker push ${REPOSITORY_URI}:${currentBuild.number}"""
                 }
             }
