@@ -46,18 +46,12 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    sh './gradlew clean build --no-daemon --info'
+                    sh './gradlew clean build --no-daemon'
                 }
             }
         }
         
-        stage('Clean Workspace') {
-            steps {
-                deleteDir() // 작업 공간 정리
-            }
-        }
-        
-        
+
         stage('Building image') {
             steps {
                 script {
@@ -75,14 +69,14 @@ pipeline {
             }
         }
     }
-        stage('Clean up Docker images') {
+        stage('Delete Docker images') {
             steps {
                 script {
-                    // Docker 이미지 삭제
                     sh """docker rmi ${IMAGE_REPO_NAME}:${IMAGE_TAG}"""
                 }
             }
         }
+    
     post {
         success {
             slackSend(channel: SLACK_CHANNEL, message: "Build succeeded: ${env.JOB_NAME} #${env.BUILD_NUMBER} - ${env.BUILD_URL}")
