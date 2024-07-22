@@ -45,8 +45,6 @@ pipeline {
                 sh '''
                     chmod +x ./gradlew
                     ./gradlew clean build --no-daemon
-
-                    cp app/build/libs/*.jar .  # JAR 파일을 현재 디렉토리로 복사
                 '''
                 }
             }
