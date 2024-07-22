@@ -14,8 +14,7 @@ COPY app/build.gradle ./app/build.gradle
 COPY app/src ./app/src
 
 # Gradle 빌드 결과물 복사
-COPY app/build/libs .
-RUN mv *.jar app.jar
+COPY app/build/libs/*.jar .
 
 
 # 포트 노출
