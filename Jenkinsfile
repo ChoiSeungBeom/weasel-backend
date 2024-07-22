@@ -46,10 +46,10 @@ pipeline {
                     chmod +x ./gradlew
                     ./gradlew wrapper --gradle-version 8.5
                     ./gradlew clean build --no-daemon
-                    ls build/libs
+                    ls app/build/libs
                     ./gradlew tasks --all
 
-                    cp build/libs/*.jar .  # JAR 파일을 현재 디렉토리로 복사
+                    cp app/build/libs/*.jar .  # JAR 파일을 현재 디렉토리로 복사
                 '''
                 }
             }
