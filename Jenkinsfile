@@ -24,9 +24,9 @@ pipeline {
                 script {
                     // AWS 자격 증명을 사용하여 ECR에 로그인
                     withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: "${AWS_CREDENTIAL}"]]) {
-                        def loginCommand = """
+                       sh '''
                             aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_REPOSITORY}
-                        """
+                          '''
 
                     }
                 }
