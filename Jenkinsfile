@@ -42,7 +42,8 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    sh './gradlew clean build --no-daemon'
+                    sh '''chmod +x ./gradlew'
+                        ./gradlew clean build --no-daemon'''
                 }
             }
         }
