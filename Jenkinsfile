@@ -75,7 +75,14 @@ pipeline {
             }
         }
     }
-
+        stage('Clean up Docker images') {
+            steps {
+                script {
+                    // Docker 이미지 삭제
+                    sh """docker rmi ${IMAGE_REPO_NAME}:${IMAGE_TAG}"""
+                }
+            }
+        }
     post {
         success {
             slackSend(channel: SLACK_CHANNEL, message: "Build succeeded: ${env.JOB_NAME} #${env.BUILD_NUMBER} - ${env.BUILD_URL}")
