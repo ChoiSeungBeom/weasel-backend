@@ -44,7 +44,6 @@ pipeline {
                 script {
                 sh '''
                     chmod +x ./gradlew
-                    ./gradlew wrapper --gradle-version 8.5
                     ./gradlew clean build --no-daemon
                     ls app/build/libs
                     ./gradlew tasks --all
@@ -76,7 +75,7 @@ pipeline {
         stage('Delete Docker images') {
             steps {
                 script {
-                    sh """docker rmi ${IMAGE_REPO_NAME}:${IMAGE_TAG}"""
+                    sh """docker.image("${IMAGE_REPO_NAME}:${IMAGE_TAG}").remove()"""
                 }
             }
         }
