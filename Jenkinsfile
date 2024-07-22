@@ -51,12 +51,11 @@ pipeline {
         }
         
         stage('Building image') {
-            steps {
-                script {
-                    // 빌드된 JAR 파일을 기반으로 도커 이미지 생성
-                    dockerImage = docker.build("${IMAGE_REPO_NAME}:${currentBuild.number}")
-                }
+          steps{
+            script {
+              dockerImage = docker.build "${IMAGE_REPO_NAME}:${currentBuild.number}"
             }
+          }
         }
 
         stage('Pushing to ECR') {
