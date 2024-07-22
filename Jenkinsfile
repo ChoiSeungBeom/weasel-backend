@@ -73,7 +73,7 @@ pipeline {
         stage('Delete Docker images') {
             steps {
                 script {
-                    sh """docker.image("${IMAGE_REPO_NAME}:${IMAGE_TAG}").remove()"""
+                    sh """docker rmi ${IMAGE_REPO_NAME}:${IMAGE_TAG}"""
                 }
             }
         }
