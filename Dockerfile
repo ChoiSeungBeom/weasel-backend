@@ -14,7 +14,7 @@ COPY app/build.gradle ./app/build.gradle
 COPY app/src ./app/src
 
 # Gradle 빌드 결과물 복사
-COPY *.jar app.jar
+COPY *.jar /app
 
 # 포트 노출
 EXPOSE 8080
