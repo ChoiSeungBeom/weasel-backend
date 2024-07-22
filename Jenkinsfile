@@ -19,18 +19,16 @@ pipeline {
     }
 
     stages {
-        stage('Login to ECR') {
+       stage('Login to ECR') {
             steps {
                 script {
-                    sh "aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_REPOSITORY}"
-                }
-            }
-            post {
-                success {
-                    echo 'Login to ECR succeeded'
-                }
-                failure {
-                    error 'Login to ECR failed'
+                    // AWS 자격 증명을 사용하여 ECR에 로그인
+                    withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: "${AWS_CREDENTIAL}"]]) {
+                        def loginCommand = """
+                            aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_REPOSITORY}
+                        """
+
+                    }
                 }
             }
         }
