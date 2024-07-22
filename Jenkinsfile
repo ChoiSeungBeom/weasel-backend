@@ -54,7 +54,7 @@ pipeline {
             steps {
                 script {
                     // 빌드된 JAR 파일을 기반으로 도커 이미지 생성
-                    dockerImage = docker.build("${IMAGE_REPO_NAME}:${currentBuild.number}")
+                    dockerImage = docker.build("${IMAGE_REPO_NAME}:${currentBuild.number} .")
                 }
             }
         }
@@ -62,7 +62,7 @@ pipeline {
         stage('Pushing to ECR') {
             steps {
                 script {
-                    sh """docker tag ${IMAGE_REPO_NAME}:${currentBuild.number} ${REPOSITORY_URI}:${currentBuild.number}"""
+                    //sh """docker tag ${IMAGE_REPO_NAME}:${currentBuild.number} ${REPOSITORY_URI}:${currentBuild.number}"""
                     sh """docker push ${REPOSITORY_URI}:${currentBuild.number}"""
                 }
             }
