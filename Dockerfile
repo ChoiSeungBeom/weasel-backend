@@ -13,9 +13,9 @@ COPY settings.gradle .
 COPY app/build.gradle ./app/build.gradle
 COPY app/src ./app/src
 
-# 빌드된 JAR 파일 복사
-ARG JAR_FILE=build/libs/*.jar
-COPY --from=build /app/${JAR_FILE} app.jar
+
+COPY build/libs/*.jar app.jar
+
 
 # 포트 노출
 EXPOSE 8080
