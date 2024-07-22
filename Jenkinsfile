@@ -53,25 +53,25 @@ pipeline {
         stage('Building image') {
           steps{
                 script {
-                  dockerImage = docker.build "${IMAGE_REPO_NAME}:${IMAGE_TAG}"
+                        sh "docker build -t ${IMAGE_REPO_NAME}:${IMAGE_TAG} ."
                 }
           }
         }
 
         // Uploading Docker images into AWS ECR
         stage('Pushing to ECR') {
-            steps{  
-                 script {
-                    sh """docker tag ${IMAGE_REPO_NAME}:${IMAGE_TAG} ${REPOSITORY_URI}:$IMAGE_TAG"""
-                    sh """docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}:${IMAGE_TAG}"""
-                 }
+            steps {
+                script {
+                    sh """docker tag ${IMAGE_REPO_NAME}:${IMAGE_TAG} ${REPOSITORY_URI}:${IMAGE_TAG}"""
+                    sh """docker push ${REPOSITORY_URI}:${IMAGE_TAG}"""
+                }
             }
         }
         
         stage('Delete Docker images') {
             steps {
                 script {
-                    sh """docker rmi ${IMAGE_REPO_NAME}:Num${currentBuild.number}"""
+                    sh """docker rmi ${IMAGE_REPO_NAME}:${IMAGE_TAG}"""
                 }
             }
         }
