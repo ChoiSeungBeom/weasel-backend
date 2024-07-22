@@ -22,17 +22,15 @@ pipeline {
         stage('Login to ECR') {
             steps {
                 script {
-                    withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: "${AWS_CREDENTIAL}"]]) {
-                        def loginCommand = """
-                            aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_REPOSITORY}
-                        """
-                        def loginResult = sh(script: loginCommand, returnStatus: true)
-                        if (loginResult == 0) {
-                            echo 'Login to ECR succeeded'
-                        } else {
-                            error 'Login to ECR failed'
-                        }
-                    }
+                    sh "aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_REPOSITORY}"
+                }
+            }
+            post {
+                success {
+                    echo 'Login to ECR succeeded'
+                }
+                failure {
+                    error 'Login to ECR failed'
                 }
             }
         }
