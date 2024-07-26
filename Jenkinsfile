@@ -42,6 +42,12 @@ pipeline {
         stage('Build') {
             steps {
                 script {
+                 slackSend(channel: SLACK_CHANNEL, 
+                              message: "Jenkins pipeline started: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                              attachments: [[
+                                  color: '#36a64f',  
+                                  text: "backend resource build start"
+                              ]])    
                 sh """
                     chmod +x ./gradlew
                     ./gradlew clean build --no-daemon
@@ -79,13 +85,28 @@ pipeline {
     
     post {
         success {
-            slackSend(channel: SLACK_CHANNEL, message: "Build succeeded: ${env.JOB_NAME} #${env.BUILD_NUMBER} - ${env.BUILD_URL}")
+            slackSend(channel: SLACK_CHANNEL, 
+                      message: "Build succeeded: ${env.JOB_NAME} #${env.BUILD_NUMBER} - ${env.BUILD_URL}",
+                      attachments: [[
+                          color: '#36a64f', 
+                          text: "Build succeeded successfully."
+                      ]])
         }
         failure {
-            slackSend(channel: SLACK_CHANNEL, message: "Build failed: ${env.JOB_NAME} #${env.BUILD_NUMBER} - ${env.BUILD_URL}")
+            slackSend(channel: SLACK_CHANNEL, 
+                      message: "Build failed: ${env.JOB_NAME} #${env.BUILD_NUMBER} - ${env.BUILD_URL}",
+                      attachments: [[
+                          color: '#ff0000',
+                          text: "Build failed. Please check the details."
+                      ]])
         }
         unstable {
-            slackSend(channel: SLACK_CHANNEL, message: "Build unstable: ${env.JOB_NAME} #${env.BUILD_NUMBER} - ${env.BUILD_URL}")
+            slackSend(channel: SLACK_CHANNEL, 
+                      message: "Build unstable: ${env.JOB_NAME} #${env.BUILD_NUMBER} - ${env.BUILD_URL}",
+                      attachments: [[
+                          color: '#f39c12',
+                          text: "Build unstable. Please check the details."
+                      ]])
         }
     }
 }
