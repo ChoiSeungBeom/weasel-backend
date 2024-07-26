@@ -19,6 +19,18 @@ pipeline {
     }
 
     stages {
+        stage('Send message to slack')
+            steps {
+                script {
+                slackSend(channel: SLACK_CHANNEL,
+                              message: "Jenkins pipeline started: ${env.JOB_NAME} #${env.BUILD_NUMBER} - ${env.BUILD_URL}",
+                              attachments: [[
+                                  color: '#36a64f',
+                                  text: 'backend resource build start'
+                              ]])
+                }
+            }
+        
        stage('Login to ECR') {
             steps {
                 script {
@@ -41,17 +53,11 @@ pipeline {
 
         stage('Build') {
             steps {
-                script {
-                 slackSend(channel: SLACK_CHANNEL, 
-                              message: "Jenkins pipeline started: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-                              attachments: [[
-                                  color: '#36a64f',  
-                                  text: "backend resource build start"
-                              ]])    
-                sh """
-                    chmod +x ./gradlew
-                    ./gradlew clean build --no-daemon
-                """
+                script { 
+                    sh """
+                        chmod +x ./gradlew
+                        ./gradlew clean build --no-daemon
+                    """
                 }
             }
         }
