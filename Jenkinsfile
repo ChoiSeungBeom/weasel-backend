@@ -19,7 +19,7 @@ pipeline {
     }
 
     stages {
-        stage('Send message to slack')
+        stage('Send message to slack'){
             steps {
                 script {
                 slackSend(channel: SLACK_CHANNEL,
@@ -30,7 +30,7 @@ pipeline {
                               ]])
                 }
             }
-        
+        }
        stage('Login to ECR') {
             steps {
                 script {
