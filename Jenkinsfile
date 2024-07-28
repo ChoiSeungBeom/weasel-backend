@@ -65,7 +65,7 @@ pipeline {
         stage('Building image') {
           steps{
                 script {
-                        sh "docker build -t ${IMAGE_REPO_NAME} ."
+                        sh "docker build -t ${IMAGE_REPO_NAME}:v${env.BUILD_NUMBER} ."
                 }
           }
         }
@@ -83,7 +83,7 @@ pipeline {
         stage('Delete Docker images') {
             steps {
                 script {
-                    sh """docker rmi ${IMAGE_REPO_NAME}"""
+                    sh """docker rmi ${IMAGE_REPO_NAME}:v${env.BUILD_NUMBER}"""
                 }
             }
         }
