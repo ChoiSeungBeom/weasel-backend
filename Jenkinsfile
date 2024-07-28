@@ -9,7 +9,7 @@ pipeline {
         AWS_REGION = 'us-east-1'
         ECR_REPOSITORY = '058087963754.dkr.ecr.us-east-1.amazonaws.com'
         IMAGE_REPO_NAME = "devopstest"
-        IMAGE_TAG = "env.{BUILD_NUMBER}"
+        IMAGE_TAG = "{env.BUILD_NUMBER}"
         REPOSITORY_URI = "058087963754.dkr.ecr.us-east-1.amazonaws.com/devopstest"
         AWS_ACCOUNT_ID = "058087963754"
         AWS_CREDENTIAL = "AWS_Credential"
