@@ -9,7 +9,7 @@ pipeline {
         AWS_REGION = 'us-east-1'
         ECR_REPOSITORY = '058087963754.dkr.ecr.us-east-1.amazonaws.com'
         IMAGE_REPO_NAME = "devopstest"
-        IMAGE_TAG = "v2"//"${env.BUILD_NUMBER}"
+        IMAGE_TAG = "weasel-backend-${env.BUILD_NUMBER}"
         REPOSITORY_URI = "058087963754.dkr.ecr.us-east-1.amazonaws.com/devopstest"
         AWS_ACCOUNT_ID = "058087963754"
         AWS_CREDENTIAL = "AWS_Credential"
@@ -65,7 +65,7 @@ pipeline {
         stage('Building image') {
           steps{
                 script {
-                        sh "docker build -t ${IMAGE_REPO_NAME}:v${env.BUILD_NUMBER} ."
+                        sh "docker build -t ${IMAGE_REPO_NAME}:v${IMAGE_TAG} ."
                 }
           }
         }
@@ -74,8 +74,8 @@ pipeline {
         stage('Pushing to ECR') {
             steps {
                 script {
-                    sh """docker tag ${IMAGE_REPO_NAME}:v${env.BUILD_NUMBER} ${REPOSITORY_URI}:v${env.BUILD_NUMBER}"""
-                    sh """docker push ${REPOSITORY_URI}:v${env.BUILD_NUMBER}"""
+                    sh """docker tag ${IMAGE_REPO_NAME}:v${IMAGE_TAG} ${REPOSITORY_URI}:v${IMAGE_TAG}"""
+                    sh """docker push ${REPOSITORY_URI}:v${IMAGE_TAG}"""
                 }
             }
         }
@@ -83,7 +83,7 @@ pipeline {
         stage('Delete Docker images') {
             steps {
                 script {
-                    sh """docker rmi ${IMAGE_REPO_NAME}:v${env.BUILD_NUMBER}"""
+                    sh """docker rmi ${IMAGE_REPO_NAME}:v${IMAGE_TAG}"""
                 }
             }
         }
